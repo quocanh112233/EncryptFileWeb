@@ -1,11 +1,11 @@
-import { useState } from 'react';
 import EncryptData from './components/EncryptData';
 import DecryptData from './components/DecryptData';
 import KeyTools from './components/KeyTools';
 import { ShieldCheck, Lock, Unlock, Key } from 'lucide-react';
+import { useUIStore } from './store/useUIStore';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'encrypt' | 'decrypt' | 'keys'>('encrypt');
+  const { activeTab, setActiveTab } = useUIStore();
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10 px-4">

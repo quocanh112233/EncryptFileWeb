@@ -1,6 +1,7 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import axios from 'axios';
 import { Key, Search, FileText, Upload, FileKey, CheckCircle } from 'lucide-react';
+import { useDecryptStore } from '../store/useDecryptStore';
 
 interface AxiosErrorResponse {
     response?: {
@@ -14,17 +15,10 @@ interface AxiosErrorResponse {
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 export default function DecryptData() {
-  const [inputType, setInputType] = useState<'text' | 'file'>('text');
-  
-  const [textInput, setTextInput] = useState('');
-  const [fileInput, setFileInput] = useState<File | null>(null);
-  
-  const [credential, setCredential] = useState('');
-  const [keyFileName, setKeyFileName] = useState<string | null>(null);
-
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const {
+      inputType, textInput, fileInput, credential, keyFileName, loading, result, error,
+      setInputType, setTextInput, setFileInput, setCredential, setKeyFileName, setLoading, setResult, setError
+  } = useDecryptStore();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const keyFileInputRef = useRef<HTMLInputElement>(null);

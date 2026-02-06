@@ -1,6 +1,7 @@
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import axios from 'axios';
 import { Upload, CheckCircle, Copy, ShieldCheck, FileKey } from 'lucide-react';
+import { useEncryptStore } from '../store/useEncryptStore';
 
 interface AxiosErrorResponse {
     response?: {
@@ -14,17 +15,10 @@ interface AxiosErrorResponse {
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 export default function EncryptData() {
-  const [inputType, setInputType] = useState<'text' | 'file'>('text');
-  const [method, setMethod] = useState<'aes' | 'hybrid'>('aes');
-  
-  const [textInput, setTextInput] = useState('');
-  const [fileInput, setFileInput] = useState<File | null>(null);
-  const [credential, setCredential] = useState('');
-  
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [keyFileName, setKeyFileName] = useState<string | null>(null);
+  const { 
+    inputType, method, textInput, fileInput, credential, loading, result, error, keyFileName,
+    setInputType, setMethod, setTextInput, setFileInput, setCredential, setLoading, setResult, setError, setKeyFileName
+  } = useEncryptStore();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const keyFileInputRef = useRef<HTMLInputElement>(null);

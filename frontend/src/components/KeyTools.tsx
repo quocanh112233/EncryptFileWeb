@@ -1,20 +1,17 @@
-import { useState } from 'react';
 import axios from 'axios';
 import { Download, RefreshCw, Key, Shield } from 'lucide-react';
+import { useKeyStore } from '../store/useKeyStore';
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 export default function KeyTools() {
-  const [publicKey, setPublicKey] = useState('');
-  const [privateKey, setPrivateKey] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { publicKey, privateKey, loading, setKeys, setLoading } = useKeyStore();
 
   const generateKeys = async () => {
     setLoading(true);
     try {
         const res = await axios.get(`${API_BASE}/keys/generate`);
-        setPublicKey(res.data.public_key);
-        setPrivateKey(res.data.private_key);
+        setKeys(res.data.public_key, res.data.private_key);
     } catch (err) {
         console.error(err);
         alert("Failed to generate keys");
@@ -110,8 +107,8 @@ export default function KeyTools() {
       <div className="bg-yellow-50 p-4 rounded-lg text-sm text-yellow-800 border border-yellow-200 flex gap-3">
         <span className="text-xl">⚠️</span>
         <p>
-            <strong>Warning:</strong> We do NOT store your keys. Once you leave or reload this page, these keys are lost forever. 
-            Please download and save your <strong>Private Key</strong> in a safe place immediately.
+            <strong>Warning:</strong> We do NOT store your keys. Once you leave or reload this page, these keys are lost forever (unless you downloaded them). 
+            However, switching tabs within this app will preserve them thanks to Zustand store.
         </p>
       </div>
     </div>
